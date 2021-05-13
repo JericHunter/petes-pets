@@ -6,6 +6,7 @@ module.exports = (app) => {
 
   // INDEX PET => index.js
 
+
   // NEW PET
   app.get('/pets/new', (req, res) => {
     res.render('pets-new');
@@ -30,7 +31,14 @@ module.exports = (app) => {
       res.render('pets-show', { pet: pet });
     });
   });
+  // SEARCH PET
+  app.get('/search', (req, res) => {
+    term = new RegExp(req.query.term, 'i')
 
+    Pet.find({'name': term}).exec((err, pets) => {
+      res.render('pets-index', { pets: pets });
+    })
+  });
   // EDIT PET
   app.get('/pets/:id/edit', (req, res) => {
     Pet.findById(req.params.id).exec((err, pet) => {
